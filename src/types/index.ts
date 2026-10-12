@@ -1,0 +1,5 @@
+export type { Claim } from './claim'
+export type { Evidence, EvidenceStance, EvidenceMethod } from './evidence'
+export { EVIDENCE_STANCES, EVIDENCE_METHODS } from './evidence'
+export type { Decision, Verdict } from './decision'
+export { VERDICTS } from './decision'
