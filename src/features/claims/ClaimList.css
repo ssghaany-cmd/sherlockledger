@@ -1,0 +1,67 @@
+.claim-list {
+  margin-top: 1.5rem;
+}
+
+.claim-list h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
+}
+
+.claim-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.claim-item {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.claim-text {
+  margin: 0 0 0.6rem;
+  overflow-wrap: anywhere;
+}
+
+.claim-meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.badge {
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
+
+.badge-supported {
+  color: var(--success);
+}
+
+.badge-contradicted {
+  color: var(--error);
+}
+
+.badge-unverified {
+  color: var(--muted);
+}
+
+.badge-unavailable {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+.empty {
+  margin-top: 1.5rem;
+  color: var(--muted);
+}
