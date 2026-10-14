@@ -1,4 +1,5 @@
-import type { Claim, Decision } from '../../types'
+import { EvidenceSection } from '../evidence/EvidenceSection'
+import type { Claim, Decision, Evidence } from '../../types'
 import { VERDICT_LABELS, getClaimStatus } from './status'
 import './ClaimList.css'
 
@@ -6,6 +7,9 @@ interface ClaimListProps {
   claims: Claim[]
   decisions: Decision[]
   decisionsError?: string | null
+  evidence: Evidence[]
+  evidenceError?: string | null
+  onEvidenceAdded: (evidence: Evidence) => void
 }
 
 function formatDate(iso: string): string {
@@ -36,6 +40,9 @@ export function ClaimList({
   claims,
   decisions,
   decisionsError = null,
+  evidence,
+  evidenceError = null,
+  onEvidenceAdded,
 }: ClaimListProps) {
   if (claims.length === 0) {
     return (
@@ -62,6 +69,12 @@ export function ClaimList({
                 {claim.origin && <span>From: {claim.origin}</span>}
                 {added && <span>Added {added}</span>}
               </p>
+              <EvidenceSection
+                claimId={claim.id}
+                evidence={evidence.filter((item) => item.claimId === claim.id)}
+                evidenceError={evidenceError}
+                onAdded={onEvidenceAdded}
+              />
             </li>
           )
         })}

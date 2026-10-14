@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { ClaimForm } from './features/claims/ClaimForm'
 import { ClaimList } from './features/claims/ClaimList'
-import { claimsStore, decisionsStore } from './lib/storage'
-import type { Claim, Decision } from './types'
+import { claimsStore, decisionsStore, evidenceStore } from './lib/storage'
+import type { Claim, Decision, Evidence } from './types'
 import './App.css'
 
 interface LoadState {
@@ -10,16 +10,21 @@ interface LoadState {
   claimsError: string | null
   decisions: Decision[]
   decisionsError: string | null
+  evidence: Evidence[]
+  evidenceError: string | null
 }
 
 function loadInitialState(): LoadState {
   const claims = claimsStore.list()
   const decisions = decisionsStore.list()
+  const evidence = evidenceStore.list()
   return {
     claims: claims.ok ? claims.value : [],
     claimsError: claims.ok ? null : claims.error.message,
     decisions: decisions.ok ? decisions.value : [],
     decisionsError: decisions.ok ? null : decisions.error.message,
+    evidence: evidence.ok ? evidence.value : [],
+    evidenceError: evidence.ok ? null : evidence.error.message,
   }
 }
 
@@ -28,6 +33,13 @@ function App() {
 
   function handleCreated(claim: Claim) {
     setState((current) => ({ ...current, claims: [...current.claims, claim] }))
+  }
+
+  function handleEvidenceAdded(item: Evidence) {
+    setState((current) => ({
+      ...current,
+      evidence: [...current.evidence, item],
+    }))
   }
 
   const count = state.claims.length
@@ -62,6 +74,9 @@ function App() {
             claims={state.claims}
             decisions={state.decisions}
             decisionsError={state.decisionsError}
+            evidence={state.evidence}
+            evidenceError={state.evidenceError}
+            onEvidenceAdded={handleEvidenceAdded}
           />
         </>
       )}
