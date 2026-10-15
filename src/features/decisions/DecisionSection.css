@@ -1,0 +1,122 @@
+.decision-section {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.decision-section h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.decision-empty {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.decision-list {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.decision-item {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+}
+
+.decision-head {
+  margin: 0 0 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.current-tag {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.decision-notes {
+  margin: 0 0 0.35rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.decision-sources {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.decision-add summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.decision-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.evidence-picker {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.evidence-picker legend {
+  padding: 0 0.3rem;
+  font-weight: 600;
+}
+
+.evidence-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  overflow-wrap: anywhere;
+}
+
+.evidence-choice input {
+  margin-top: 0.3rem;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.decision-form button {
+  align-self: flex-start;
+  font: inherit;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+}
+
+.decision-form button:focus-visible,
+.decision-add summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

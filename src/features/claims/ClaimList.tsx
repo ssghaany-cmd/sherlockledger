@@ -1,3 +1,4 @@
+import { DecisionSection } from '../decisions/DecisionSection'
 import { EvidenceSection } from '../evidence/EvidenceSection'
 import type { Claim, Decision, Evidence } from '../../types'
 import { VERDICT_LABELS, getClaimStatus } from './status'
@@ -10,6 +11,7 @@ interface ClaimListProps {
   evidence: Evidence[]
   evidenceError?: string | null
   onEvidenceAdded: (evidence: Evidence) => void
+  onDecisionAdded: (decision: Decision) => void
 }
 
 function formatDate(iso: string): string {
@@ -43,6 +45,7 @@ export function ClaimList({
   evidence,
   evidenceError = null,
   onEvidenceAdded,
+  onDecisionAdded,
 }: ClaimListProps) {
   if (claims.length === 0) {
     return (
@@ -61,6 +64,12 @@ export function ClaimList({
         {newestFirst.map((claim) => {
           const { label, tone } = describeStatus(claim, decisions, decisionsError)
           const added = formatDate(claim.createdAt)
+          const claimEvidence = evidence.filter(
+            (item) => item.claimId === claim.id,
+          )
+          const claimDecisions = decisions.filter(
+            (item) => item.claimId === claim.id,
+          )
           return (
             <li key={claim.id} className="claim-item">
               <p className="claim-text">{claim.text}</p>
@@ -71,9 +80,17 @@ export function ClaimList({
               </p>
               <EvidenceSection
                 claimId={claim.id}
-                evidence={evidence.filter((item) => item.claimId === claim.id)}
+                evidence={claimEvidence}
                 evidenceError={evidenceError}
                 onAdded={onEvidenceAdded}
+              />
+              <DecisionSection
+                claimId={claim.id}
+                decisions={claimDecisions}
+                evidence={claimEvidence}
+                decisionsError={decisionsError}
+                evidenceError={evidenceError}
+                onAdded={onDecisionAdded}
               />
             </li>
           )

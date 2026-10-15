@@ -42,6 +42,13 @@ function App() {
     }))
   }
 
+  function handleDecisionAdded(item: Decision) {
+    setState((current) => ({
+      ...current,
+      decisions: [...current.decisions, item],
+    }))
+  }
+
   const count = state.claims.length
 
   return (
@@ -77,6 +84,7 @@ function App() {
             evidence={state.evidence}
             evidenceError={state.evidenceError}
             onEvidenceAdded={handleEvidenceAdded}
+            onDecisionAdded={handleDecisionAdded}
           />
         </>
       )}
