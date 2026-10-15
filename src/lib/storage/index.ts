@@ -1,4 +1,4 @@
-import type { Claim, Decision, Evidence } from '../../types'
+import type { AuditEntry, Claim, Decision, Evidence } from '../../types'
 import { createCollection } from './collection'
 
 export const claimsStore = createCollection<Claim>('sherlockledger:claims')
@@ -8,6 +8,7 @@ export const evidenceStore = createCollection<Evidence>(
 export const decisionsStore = createCollection<Decision>(
   'sherlockledger:decisions',
 )
+export const auditStore = createCollection<AuditEntry>('sherlockledger:audit')
 
 export { createCollection } from './collection'
 export type { Collection } from './collection'

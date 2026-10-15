@@ -1,6 +1,7 @@
+import { AuditHistory } from '../audit/AuditHistory'
 import { DecisionSection } from '../decisions/DecisionSection'
 import { EvidenceSection } from '../evidence/EvidenceSection'
-import type { Claim, Decision, Evidence } from '../../types'
+import type { AuditEntry, Claim, Decision, Evidence } from '../../types'
 import { VERDICT_LABELS, getClaimStatus } from './status'
 import './ClaimList.css'
 
@@ -10,6 +11,8 @@ interface ClaimListProps {
   decisionsError?: string | null
   evidence: Evidence[]
   evidenceError?: string | null
+  audit: AuditEntry[]
+  auditError?: string | null
   onEvidenceAdded: (evidence: Evidence) => void
   onDecisionAdded: (decision: Decision) => void
 }
@@ -44,6 +47,8 @@ export function ClaimList({
   decisionsError = null,
   evidence,
   evidenceError = null,
+  audit,
+  auditError = null,
   onEvidenceAdded,
   onDecisionAdded,
 }: ClaimListProps) {
@@ -70,6 +75,7 @@ export function ClaimList({
           const claimDecisions = decisions.filter(
             (item) => item.claimId === claim.id,
           )
+          const claimAudit = audit.filter((item) => item.claimId === claim.id)
           return (
             <li key={claim.id} className="claim-item">
               <p className="claim-text">{claim.text}</p>
@@ -92,6 +98,7 @@ export function ClaimList({
                 evidenceError={evidenceError}
                 onAdded={onDecisionAdded}
               />
+              <AuditHistory entries={claimAudit} auditError={auditError} />
             </li>
           )
         })}

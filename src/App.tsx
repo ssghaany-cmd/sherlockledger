@@ -1,8 +1,20 @@
 import { useState } from 'react'
 import { ClaimForm } from './features/claims/ClaimForm'
 import { ClaimList } from './features/claims/ClaimList'
-import { claimsStore, decisionsStore, evidenceStore } from './lib/storage'
-import type { Claim, Decision, Evidence } from './types'
+import {
+  claimCreatedEvent,
+  decisionRecordedEvent,
+  evidenceAddedEvent,
+  recordAuditEvent,
+} from './features/audit/events'
+import type { NewAuditEvent } from './features/audit/events'
+import {
+  auditStore,
+  claimsStore,
+  decisionsStore,
+  evidenceStore,
+} from './lib/storage'
+import type { AuditEntry, Claim, Decision, Evidence } from './types'
 import './App.css'
 
 interface LoadState {
@@ -12,12 +24,16 @@ interface LoadState {
   decisionsError: string | null
   evidence: Evidence[]
   evidenceError: string | null
+  audit: AuditEntry[]
+  auditError: string | null
+  auditWarning: string | null
 }
 
 function loadInitialState(): LoadState {
   const claims = claimsStore.list()
   const decisions = decisionsStore.list()
   const evidence = evidenceStore.list()
+  const audit = auditStore.list()
   return {
     claims: claims.ok ? claims.value : [],
     claimsError: claims.ok ? null : claims.error.message,
@@ -25,14 +41,34 @@ function loadInitialState(): LoadState {
     decisionsError: decisions.ok ? null : decisions.error.message,
     evidence: evidence.ok ? evidence.value : [],
     evidenceError: evidence.ok ? null : evidence.error.message,
+    audit: audit.ok ? audit.value : [],
+    auditError: audit.ok ? null : audit.error.message,
+    auditWarning: null,
   }
 }
 
 function App() {
   const [state, setState] = useState<LoadState>(loadInitialState)
 
+  function record(event: NewAuditEvent) {
+    const result = recordAuditEvent(event)
+    if (result.ok) {
+      setState((current) => ({
+        ...current,
+        audit: [...current.audit, result.value],
+        auditWarning: null,
+      }))
+    } else {
+      setState((current) => ({
+        ...current,
+        auditWarning: `The change was saved, but its history entry could not be recorded: ${result.error.message}`,
+      }))
+    }
+  }
+
   function handleCreated(claim: Claim) {
     setState((current) => ({ ...current, claims: [...current.claims, claim] }))
+    record(claimCreatedEvent(claim))
   }
 
   function handleEvidenceAdded(item: Evidence) {
@@ -40,6 +76,7 @@ function App() {
       ...current,
       evidence: [...current.evidence, item],
     }))
+    record(evidenceAddedEvent(item))
   }
 
   function handleDecisionAdded(item: Decision) {
@@ -47,6 +84,7 @@ function App() {
       ...current,
       decisions: [...current.decisions, item],
     }))
+    record(decisionRecordedEvent(item))
   }
 
   const count = state.claims.length
@@ -69,6 +107,11 @@ function App() {
           {state.decisionsError}
         </p>
       )}
+      {state.auditWarning && (
+        <p className="form-error" role="alert">
+          {state.auditWarning}
+        </p>
+      )}
 
       <ClaimForm onCreated={handleCreated} />
 
@@ -83,6 +126,8 @@ function App() {
             decisionsError={state.decisionsError}
             evidence={state.evidence}
             evidenceError={state.evidenceError}
+            audit={state.audit}
+            auditError={state.auditError}
             onEvidenceAdded={handleEvidenceAdded}
             onDecisionAdded={handleDecisionAdded}
           />
